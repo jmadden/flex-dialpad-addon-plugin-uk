@@ -1,0 +1,21 @@
+{
+  "name": "plugin-dialpad",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "postinstall": "flex-plugin pre-script-check"
+  },
+  "dependencies": {
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
+    "env-cmd": "^10.1.0",
+    "lodash": "^4.17.20",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-select": "^3.1.0",
+    "flex-plugin-scripts": "4.3.8-beta.0"
+  },
+  "devDependencies": {
+    "@twilio/flex-ui": "^1"
+  }
+}
