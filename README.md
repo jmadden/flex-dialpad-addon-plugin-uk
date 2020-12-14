@@ -109,7 +109,7 @@ Before using this plugin you must first create a dedicated TaskRouter workflow o
 
 ### TaskQueue Expression
 
-In the TaskQueues make sure their expression includes logic that will pull in workers with the skill that is the same name of the TaskQueue. For exameple:
+In the TaskQueues make sure the TaskQueue expression includes logic that will pull in workers with the skill that is the same name of the TaskQueue. For exameple:
 
 A TaskQueu named `Vendor Relations` should have an expression that reads `"Vendor Relations" IN routing.skills`.
 
