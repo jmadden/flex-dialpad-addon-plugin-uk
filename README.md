@@ -39,7 +39,7 @@ This plugin uses the Twilio CLI for deployment and development.
   - Instructions: https://www.twilio.com/docs/flex/developer/plugins/cli/install
 
 - Install the Twilio Serverless plugin.
-  - Insturctions: https://www.twilio.com/docs/twilio-cli/plugins#available-plugins
+  - Instructions: https://www.twilio.com/docs/twilio-cli/plugins#available-plugins
 
 ### Setup
 
@@ -54,6 +54,10 @@ cd
 npm install
 ```
 
+In the `/public` directory make a copy of the `appConfig.examples.js` file and rename it to `appConfig.js`, copy the contents from `appConfig.examples.js` and paste it into `appConfig.js`.
+
+---
+
 ### Development
 
 In order to develop locally, you can use the Twilio CLI to run the plugin locally. Using your commandline run the following from the root dirctory of the plugin.
@@ -66,17 +70,31 @@ This will automatically start up the Webpack Dev Server and open the browser for
 
 When you make changes to your code, the browser window will be automatically refreshed.
 
+---
+
 ### Deploy
 
-Once you are happy with your plugin, you have to bundle it in order to deploy it to Twilio Flex.
+#### Plugin Deployment
 
-Run the following command to start the bundling:
+Once you are happy with your plugin, you have to deploy then release the plugin for it to take affecte on Twilio hosted Flex.
+
+Run the following command to start the deployment:
 
 ```bash
 twilio flex:plugins:deploy --major --changelog "Notes for this version" --description "Functionality of the plugin"
 ```
 
 After your deployment runs you will receive instructions for releasing your plugin from the bash prompt. You can use this or skip this step and release your plugin from the Flex plugin dashboard here https://flex.twilio.com/admin/plugins
+
+#### Serverless Deployment
+
+From the commandline cd into the `/serverless` directory. Run the following command to deploy the severless code.
+
+```bash
+twilio serverless:deploy
+```
+
+---
 
 ## TaskRouter
 
@@ -89,28 +107,28 @@ Before using this plugin you must first create a dedicated TaskRouter workflow o
 
 <img width="700px" src="screenshots/outbound-filter.png"/>
 
-## Twilio Serverless
+### TaskQueue Expression
 
-You will need the [Twilio CLI](https://www.twilio.com/docs/twilio-cli/quickstart) and the [serverless plugin](https://www.twilio.com/docs/labs/serverless-toolkit/getting-started) to deploy the functions inside the `serverless` folder of this project. You can install the necessary dependencies with the following commands:
+In the TaskQueues make sure their expression includes logic that will pull in workers with the skill that is the same name of the TaskQueue. For exameple:
 
-`npm install twilio-cli -g`
+A TaskQueu named `Vendor Relations` should have an expression that reads `"Vendor Relations" IN routing.skills`.
 
-and then
+The agent should also have a skill of the same name, `Vendor Relations`. The skills can be created here: https://flex.twilio.com/admin/skills and can be assigned to an agent here: https://flex.twilio.com/teams/workers.
 
-`twilio plugins:install @twilio-labs/plugin-serverless`
+Setting this up allows for agents to be filtered by queue when making agent to agent calls.
 
-# How to use
+# High Level - How to use
 
 1. Setup all dependencies above: the workflow and Twilio CLI packages.
 
 2. Clone this repository
 
-3. Copy .env.example to .env.development and to .env.production and set the following variables:
+3. Copy .env.example to .env and set the following variables:
 
    - REACT_APP_SERVICE_BASE_URL: your Twilio Functions base url (this will be available after you deploy your functions). In local development environment, it could be your localhost base url.
-   - REACT_APP_TASK_CHANNEL_SID: the voice channel SID
+   - REACT_APP_TASK_CHANNEL_SID: the TaskRouter voice channel SID
 
-   **Note**: Remember that both .env.development and .env.production is for front-end use so do not add any type of key/secret variable to them. When developing, the .env.development is used while the .env.production is used when building and deploying the plugin. Also, just variables starting with the name _REACT*APP*_ will work.
+   **Note**: Remember that the .env is for front-end use so do not add any type of key/secret variable to them. Also, just variables starting with the name _REACT*APP*_ will work.
 
 4. run `npm install`
 
@@ -118,7 +136,7 @@ and then
 
 6. cd into ./serverless/ then run `npm install` and then `twilio serverless:deploy` (optionally you can run locally with `twilio serverless:start --ngrok=""`
 
-7. cd back to the root folder and run `npm start` to run locally or `npm run-script build` and deploy the generated ./build/plugin-dialpad.js to [twilio assests](https://www.twilio.com/console/assets/public) to include plugin with hosted Flex
+7. cd back to the root folder and run `twilio flex:plugins:start` to run locally or `twilio flex:plugins:deploy --minor --changelog "Replace with notes for this version" --description "Replace with description"`.
 
 # Known issues
 
