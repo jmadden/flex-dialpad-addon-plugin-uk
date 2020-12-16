@@ -144,11 +144,11 @@ class InternalDialQueue extends React.Component {
       .map((worker) => {
         const { activity_name } = worker;
         const { contact_uri, full_name } = worker.attributes;
-        const skills = worker.attributes.routing
-          ? worker.attributes.routing.skills
-          : '';
+
         return activity_name !== 'Offline' &&
-          skills.includes(this.state.selectedQueue.value)
+          worker.attributes.routing?.skills.includes(
+            this.state.selectedQueue.value
+          )
           ? { label: full_name, value: contact_uri }
           : null;
       })
